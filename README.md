@@ -18,6 +18,10 @@ EasyEditorPlugin是一个UE下快速开发编辑器扩展的插件，其特点�
 
 ![easyeditor](Doc/Pic/easyeditor.gif)
 
+## demo工程
+
+[EasyEditorPluginDemo](https://github.com/puerts/EasyEditorPluginDemo)
+
 ## 代码示例
 
 ### 添加主菜单
