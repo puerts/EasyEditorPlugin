@@ -5,6 +5,8 @@
 #include <imgui.h>
 #include <Services/ImguiGlobalContextService.h>
 #include <Extension/SmallWidgets.h>
+#include "EasyEditorDetailCustomization.h"
+#include "ImguiWrap/ImguiUEWrap.h"
 
 struct UEImGuiWrapped
 {
@@ -21,10 +23,23 @@ struct UEImGuiWrapped
 	{
 		UEImGui::RemoveGlobalWindow(InIndex, WorldContextObject);
 	}
+
+	static void AddDetailCustomization(UClass* InClass, std::function<void(UObject* InObject)> InOnDraw)
+	{
+		UEasyEditorDetailCustomization* CDO = Cast<UEasyEditorDetailCustomization>(UEasyEditorDetailCustomization::StaticClass()->GetDefaultObject(true));
+		CDO->AddOnDetailDraw(InClass, InOnDraw);
+	}
+
+	static void RemoveDetailCustomization(UClass* InClass)
+	{
+		UEasyEditorDetailCustomization* CDO = Cast<UEasyEditorDetailCustomization>(UEasyEditorDetailCustomization::StaticClass()->GetDefaultObject(true));
+		CDO->RemoveOnDetailDraw(InClass);
+	}
 };
 
 UsingNamedCppType(UEImGuiWrapped, UEImGui);
 UsingUClass(UObject);
+UsingUClass(UClass);
 
 struct AutoRegisterForUEImGui
 {
@@ -34,6 +49,10 @@ struct AutoRegisterForUEImGui
 		    .Function("AddGlobalWindow", MakeFunction(&UEImGuiWrapped::AddGlobalWindow, nullptr))
 		    .Function("RemoveGlobalWindow", MakeFunction(&UEImGuiWrapped::RemoveGlobalWindow, nullptr))
 		    .Function("DrawSmallWidgetDemo", MakeFunction(&ImGui::DrawSmallWidgetDemo))
+		    .Function("AddDetailCustomization", MakeFunction(&UEImGuiWrapped::AddDetailCustomization))
+		    .Function("RemoveDetailCustomization", MakeFunction(&UEImGuiWrapped::RemoveDetailCustomization))
+		    .Function("BeginDetail", MakeFunction(&ImGui::BeginDetail))
+		    .Function("EndDetail", MakeFunction(&ImGui::EndDetail))
 			.Register();
 	}
 };

@@ -10,6 +10,7 @@
 #include "Binding.hpp"
 #include "UEDataBinding.hpp"
 #include "Object.hpp"
+#include "EasyEditorDetailCustomization.h"
 
 namespace puerts
 {
@@ -266,6 +267,11 @@ void FEasyEditorPluginModule::InitJsEnv()
 
 void FEasyEditorPluginModule::UnInitJsEnv()
 {
+	UEasyEditorDetailCustomization* CDO = Cast<UEasyEditorDetailCustomization>(UEasyEditorDetailCustomization::StaticClass()->GetDefaultObject(false));
+	if (CDO)
+	{
+		CDO->ClearOnDetailDraw();
+	}
 	Eval = nullptr;
 	OnJsEnvPreReload = nullptr;
 	if (JsEnv.IsValid())
