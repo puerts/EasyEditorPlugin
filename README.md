@@ -4,15 +4,15 @@
 
 EasyEditorPlugin是一个UE下快速开发编辑器扩展的插件，其特点：
 
-* 1、几行代码即可添加主菜单、工具栏按钮、上下文菜单等等；
+* 1、几行代码即可添加主菜单、工具栏按钮、上下文菜单、Detail扩展等等；
 
 * 2、运行时脚本热刷新；
 
-* 3、代码即是UI，结合2实现UI热刷新；
+* 3、代码即是UI，结合2可实现UI热刷新；
 
 * 4、nodejs + npm海量扩展可用
 
-* 5、脚本可方法任意UE API，可调用几乎所有c++库
+* 5、脚本可调用任意UE API，可调用几乎所有c++库
 
 ## 效果图
 
@@ -43,12 +43,7 @@ script_menu.AddMenuEntry("Scripts", entry);
 const toolbar = menus.FindMenu('LevelEditor.LevelEditorToolBar')
 const entry = UE.ToolMenuEntry.InitToolBarButton("Widget", "ImGUIWidget", () => {
     cpp.UEImGui.AddGlobalWindow(() => {
-        let isOpened = $ref(true);
-        cpp.ImGui.SetNextWindowSize(new cpp.ImVec2(500, 800), 1 << 3);
-        cpp.ImGui.Begin("Imgui Small Widget Demo", isOpened);
-        cpp.UEImGui.DrawSmallWidgetDemo();
-        cpp.ImGui.End();
-        return $unref(isOpened);
+        //console.log('toolbar button click')
     });
 });
 toolbar.AddMenuEntry("ImGUIWidget", entry);
@@ -57,22 +52,14 @@ toolbar.AddMenuEntry("ImGUIWidget", entry);
 ### 添加工具栏下拉按钮(ComboButton)
 
 ~~~typescript
-const entry = UE.ToolMenuEntry.InitMenuEntry("PuertsOpen", "PuertsOpen", "just a test...", (context: UE.ToolMenuContext) => {
-    if (context) {
-        const context_menu_context =  UE.ToolMenus.FindContext(context, UE.ContentBrowserDataMenuContext_FolderMenu.StaticClass()) as UE.ContentBrowserDataMenuContext_FolderMenu;
-        if (context_menu_context) {
-            const selected_items = context_menu_context.SelectedItems;
-            console.log(`selected_items num:${selected_items.Num()}`);
-            for(var i = 0; i < selected_items.Num(); i++) {
-                const selecte_item = selected_items.Get(i);
-                let path = $ref<string>();
-                selecte_item.GetItemPhysicalPath(path);
-                console.log(`name:${selecte_item.GetItemName()}, path:${path}, isfolder:${selecte_item.IsFolder()}`);
-            }
-        } 
-    }
-});
-folder_context_menu.AddMenuEntry("TS", entry);
+const icon = new cpp.FSlateIcon("EditorStyle", "LevelEditor.WorldProperties", "LevelEditor.WorldProperties.Small");
+const entry = UE.ToolMenuEntry.InitComboButton("Puerts", undefined, (tool_menu: UE.ToolMenu) => {
+    const sub_entry = UE.ToolMenuEntry.InitMenuEntry("ShowDemoWindow", "ShowDemoWindow", "just a test...", () => {
+        //console.log('toolbar combo button click')
+    });
+    tool_menu.AddMenuEntry("ShowDemo", sub_entry);
+}, "Puerts", "Puerts", icon);
+toolbar.AddMenuEntry("ComboButton", entry);
 ~~~
 
 ### 添加文件夹右键菜单
@@ -129,7 +116,16 @@ cpp.EasyEditorPlugin.AddConsoleCommand("Puerts.TestCmd", "just a test...", (...a
 
 ~~~
 
-### ImGUI
+### 添加Detail扩展
+~~~typescript
+cpp.UEImGui.AddDetailCustomization(UE.Actor.StaticClass(), (obj:UE.Object) => {
+    cpp.UEImGui.BeginDetail();
+    cpp.ImGui.Text(`Actor Name:${obj.GetName()}`);
+    cpp.UEImGui.EndDetail();
+});
+~~~
+
+### ImGUI窗口
 
 ~~~typescript
 ImGui.SetNextWindowSize(new ImVec2(200, 100), 1 << 2)
@@ -140,3 +136,7 @@ ImGui.Text(`Application average ${(1000 / ImGui.GetIO().Framerate).toFixed(3)} m
 
 ImGui.End();
 ~~~
+
+## 依赖
+
+本插件基于[Puerts](https://github.com/Tencent/puerts)以及[UEImgui](https://github.com/ZhuRong-HomoStation/UEImgui)开发。
