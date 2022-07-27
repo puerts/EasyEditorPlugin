@@ -1,6 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
+#ifdef UEIMGUI_API
 #include "EasyEditorDetailCustomization.h"
 
 void UEasyEditorDetailCustomization::OnEditSingleObject(UObject* InObject)
@@ -26,3 +24,4 @@ bool UEasyEditorDetailCustomization::IsSupportClass(UClass* InClass)
 	}
 	return false;
 }
+#endif

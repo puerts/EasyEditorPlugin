@@ -1,3 +1,4 @@
+#ifdef UEIMGUI_API
 #include "Binding.hpp"
 #include "Object.hpp"
 #include <string>
@@ -806,3 +807,4 @@ struct AutoRegisterForDearImGui
 };
 
 AutoRegisterForDearImGui _AutoRegisterForImGui__;
+#endif
