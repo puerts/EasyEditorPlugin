@@ -20,6 +20,8 @@ public:
 
 	TSparseArray<TUniquePtr<FAutoConsoleCommand>> TsConsoleCommands;
 
+	FSimpleMulticastDelegate OnJsEnvCleanup;
+
 private:
 	TSharedPtr<puerts::FJsEnv> JsEnv;
 	TSharedPtr<puerts::FSourceFileWatcher> SourceFileWatcher;

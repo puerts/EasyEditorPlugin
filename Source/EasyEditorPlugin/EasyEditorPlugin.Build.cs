@@ -41,10 +41,7 @@ public class EasyEditorPlugin : ModuleRules
 				"ToolMenus",
 				"UnrealEd",
 				"ContentBrowserData",
-				"JsEnv",
-				"Imgui",
-				"UEImgui",
-				"UEImguiEditor"
+				"JsEnv"
 			}
 			);
 		

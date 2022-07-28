@@ -25,10 +25,6 @@
 		{
 			"Name": "Puerts",
 			"Enabled": true
-		},
-		{
-			"Name": "UEImgui",
-			"Enabled": true
 		}
 	]
 }
