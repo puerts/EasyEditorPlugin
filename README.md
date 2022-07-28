@@ -116,9 +116,11 @@ cpp.EasyEditorPlugin.AddConsoleCommand("Puerts.TestCmd", "just a test...", (...a
 
 ~~~
 
-## UEImGui相关
+## ImGui相关
 
 本部分内容需要添加两个插件：[UEImgui](https://github.com/ZhuRong-HomoStation/UEImgui)、[EasyEditor_ImGui](https://github.com/puerts/EasyEditor_ImGui)
+
+如果需要接入其它UI能力，或者其它c++库提供的能力，可参考[该文档](Doc/extension.md)
 
 ### 添加Detail扩展
 ~~~typescript
