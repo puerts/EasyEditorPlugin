@@ -116,6 +116,10 @@ cpp.EasyEditorPlugin.AddConsoleCommand("Puerts.TestCmd", "just a test...", (...a
 
 ~~~
 
+## UEImGui相关
+
+本部分内容需要添加两个插件：[UEImgui](https://github.com/ZhuRong-HomoStation/UEImgui)、[EasyEditor_ImGui](https://github.com/puerts/EasyEditor_ImGui)
+
 ### 添加Detail扩展
 ~~~typescript
 cpp.UEImGui.AddDetailCustomization(UE.Actor.StaticClass(), (obj:UE.Object) => {
@@ -139,4 +143,6 @@ ImGui.End();
 
 ## 依赖
 
-本插件基于[Puerts](https://github.com/Tencent/puerts)以及[UEImgui](https://github.com/ZhuRong-HomoStation/UEImgui)开发。
+* [Puerts](https://github.com/Tencent/puerts)
+* [UEImgui](https://github.com/ZhuRong-HomoStation/UEImgui)
+* [EasyEditor_ImGui](https://github.com/puerts/EasyEditor_ImGui)
