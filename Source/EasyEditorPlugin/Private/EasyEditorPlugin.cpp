@@ -267,6 +267,7 @@ void FEasyEditorPluginModule::UnInitJsEnv()
 	OnJsEnvCleanup.Broadcast();
 	Eval = nullptr;
 	OnJsEnvPreReload = nullptr;
+	TsConsoleCommands.Empty();
 	if (JsEnv.IsValid())
 	{
 		JsEnv.Reset();
