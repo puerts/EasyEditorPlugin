@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
+#include "LevelEditor.h"
 #include "JsEnv.h"
 #include "SourceFileWatcher.h"
 #include <functional>
@@ -37,4 +38,6 @@ private:
 	bool Tick(float);
 
 	bool StartupScriptCalled = false;
+
+	void HandleMapChanged(UWorld* InWorld, EMapChangeType InMapChangeType);
 };

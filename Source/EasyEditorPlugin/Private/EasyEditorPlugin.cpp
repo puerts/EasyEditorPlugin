@@ -193,9 +193,26 @@ AutoRegisterForEEP _AutoRegisterForEEP__;
 
 #define LOCTEXT_NAMESPACE "FEasyEditorPluginModule"
 
+void FEasyEditorPluginModule::HandleMapChanged(UWorld* InWorld, EMapChangeType InMapChangeType)
+{
+	if (EMapChangeType::TearDownWorld == InMapChangeType && IsInGameThread())
+	{
+		if (JsEnv.IsValid())
+		{
+			JsEnv->RequestFullGarbageCollectionForTesting();
+		}
+	}
+}
+
 void FEasyEditorPluginModule::StartupModule()
 {
+	char GCFlags[] = "--expose-gc";
+	v8::V8::SetFlagsFromString(GCFlags, sizeof(GCFlags));
 	FCoreDelegates::OnPostEngineInit.AddRaw(this, &FEasyEditorPluginModule::OnPostEngineInit);
+	if (FLevelEditorModule* LevelEditor = FModuleManager::GetModulePtr<FLevelEditorModule>("LevelEditor"))
+	{
+		LevelEditor->OnMapChanged().AddRaw(this, &FEasyEditorPluginModule::HandleMapChanged);
+	}
 }
 
 void FEasyEditorPluginModule::OnPostEngineInit()
