@@ -6,8 +6,12 @@ public class EasyEditorPlugin : ModuleRules
 {
 	public EasyEditorPlugin(ReadOnlyTargetRules Target) : base(Target)
 	{
-		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-		
+#if UE_5_3_OR_LATER
+        PCHUsage = PCHUsageMode.NoPCHs;
+#else
+        PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
+#endif
+
 		PublicIncludePaths.AddRange(
 			new string[] {
 				// ... add public include paths required here ...

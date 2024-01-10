@@ -8,6 +8,7 @@
 #include "Binding.hpp"
 #include "UEDataBinding.hpp"
 #include "Object.hpp"
+#include "UECompatible.h"
 
 namespace puerts
 {
@@ -20,33 +21,33 @@ struct ScriptTypeName<TAttribute<T>>
     }
 };
 
-namespace converter
+namespace v8_impl
 {
 template <typename T>
 struct Converter<TAttribute<T>>
 {
-    static ValueType toScript(ContextType context, TAttribute<T> value)
+    static API::ValueType toScript(API::ContextType context, TAttribute<T> value)
     {
     	if (value.IsSet())
     	{
     		return Converter<T>::toScript(context, value.Get());
     	}
-        return GetUndefined(context);
+        return API::GetUndefined(context);
     }
 
-    static TAttribute<T> toCpp(ContextType context, const ValueType value)
+    static TAttribute<T> toCpp(API::ContextType context, const API::ValueType value)
     {
-        if (IsNullOrUndefined(context, value))
+        if (API::IsNullOrUndefined(context, value))
             return TAttribute<T>();
         return TAttribute<T>(Converter<T>::toCpp(context, value));
     }
 
-    static bool accept(ContextType context, const ValueType value)
+    static bool accept(API::ContextType context, const API::ValueType value)
     {
-        return IsNullOrUndefined(context, value) || Converter<T>::accept(context, value);
+        return API::IsNullOrUndefined(context, value) || Converter<T>::accept(context, value);
     }
 };
-}    // namespace converter
+}    // namespace v8_impl
 }    // namespace puerts
 
 
@@ -218,7 +219,7 @@ void FEasyEditorPluginModule::StartupModule()
 void FEasyEditorPluginModule::OnPostEngineInit()
 {
 	InitJsEnv();
-	FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateRaw(this, &FEasyEditorPluginModule::Tick));
+	FUETicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateRaw(this, &FEasyEditorPluginModule::Tick));
 	
 	ConsoleCommand = MakeUnique<FAutoConsoleCommand>(TEXT("EasyEditor.Restart"), TEXT("Start Script"),
 	FConsoleCommandWithArgsDelegate::CreateLambda(
